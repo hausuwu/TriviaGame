@@ -1,5 +1,6 @@
 
-// loads entire page
+// ------------------- Load Page -------------------
+
 $(document).ready(function () {
 
     // game starts when user clicks the start button
@@ -32,7 +33,7 @@ var myQuestions = [
 // ------------------- Global Variables -------------------
 
 // set game timer clock to 60 seconds
-var timeRemaining = 60;
+var timeRemaining = 1000;
 var correct;
 var userAnswer;
 var numCorrect = 0;
@@ -63,19 +64,10 @@ var numUnanswered = 0;
         // stops and removes the timer at zero 
         if(timeRemaining === 0){
             stopTimer();
+
         }
     }
 
-    // stop timer check answers
-    function stopTimer() {
-
-        clearInterval();
-        // clears the timer from the html
-        $("#timer").empty();
-        // hides the timer because otherwise negatives are displayed
-        $("#timer").hide();
-        checkAnswers();
-    }
 
 
 // ------------------- Display Questions -------------------
@@ -101,10 +93,10 @@ var numUnanswered = 0;
 
 
             // updates the html with our answers and radio buttons so only one can be selected 
-            output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio '+i+' group" id="radio '+i+'" <label class="form-check-label" id="radio '+i+' label" for="radio '+i+'">' + answer1 + '</label></div>');
-            output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio '+i+' group" id="radio '+i+'" <label class="form-check-label" id="radio '+i+' label" for="radio '+i+'">' + answer2 + '</label></div>');
-            output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio '+i+' group" id="radio '+i+'" <label class="form-check-label" id="radio '+i+' label" for="radio '+i+'">' + answer3 + '</label></div>');
-            output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio '+i+' group" id="radio '+i+'" <label class="form-check-label" id="radio '+i+' label" for="radio '+i+'">' + answer4 + '</label></div>');
+            output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio'+i+'group" value="'+ answer1 +'" <label class="form-check-label" label" for="radio'+i+'">' + answer1 + '</label></div>');
+            output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio'+i+'group" value="'+ answer2 +'" <label class="form-check-label" label" for="radio'+i+'">' + answer2 + '</label></div>');
+            output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio'+i+'group" value="'+ answer3 +'" <label class="form-check-label" label" for="radio'+i+'">' + answer3 + '</label></div>');
+            output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio'+i+'group" value="'+ answer4 +'" <label class="form-check-label" label" for="radio'+i+'">' + answer4 + '</label></div>');
 
         }
         // on click event btn ends game
@@ -119,7 +111,8 @@ var numUnanswered = 0;
             // reassigns correct to the correctAnswer property in myQuestions Array
             correct = myQuestions[i].correctAnswer;
             // reassigns userAnswer to the checked radio id 
-            userAnswer = $('input[id=radio'+i+']:checked');
+            userAnswer = $('input[name="radio'+i+'group"]:checked').val();
+            // console.log(userAnswer)
 
             if (userAnswer === correct) {
                 numCorrect++;
@@ -131,12 +124,30 @@ var numUnanswered = 0;
                 numUnanswered++;
             }
 
-            scoreScreen(numCorrect, numIncorrect, numUnanswered);
+            scoreScreen();
         }
-    } 
+    }
+    
+
+
+// ------------------- End Game -------------------
+
+     // stop timer check answers
+    function stopTimer() {
+
+        clearInterval();
+        // removes the timer from the html
+        $("#timer").empty();
+        // hides the timer because otherwise negatives are displayed
+        $("#timer").hide();
+        checkAnswers();
+    }
+
+
 
 // ------------------- Display Score -------------------
 
+    // removes questions and displays the user's score
     function scoreScreen() {
 
         $("#game-screen").empty();
