@@ -41,7 +41,7 @@ var numUnanswered = 0;
 
 
 
-// ------------------- Game Timer -------------------
+// ------------------- Game Begins, Timer starts -------------------
     
     // start the timer, begin game
     function startTimer() {
@@ -74,7 +74,7 @@ var numUnanswered = 0;
         $("#timer").empty();
         // hides the timer because otherwise negatives are displayed
         $("#timer").hide();
-        // checkAnswers();
+        checkAnswers();
     }
 
 
@@ -107,17 +107,19 @@ var numUnanswered = 0;
             output.append('<div class="form-check form-check-inline mb-4"><input class="form-check-input" type="radio" name="radio '+i+' group" id="radio '+i+'" <label class="form-check-label" id="radio '+i+' label" for="radio '+i+'">' + answer4 + '</label></div>');
 
         }
-
+        // on click event btn ends game
         var submitBtn = $('<br><button class="btn" id="submit-button">Submit</button>')
         output.append(submitBtn);
         $("#submit-button").on("click", stopTimer);
     }
 
     function checkAnswers() {
-        
+        // loops through trivia questions
         for(var i = 0; i < myQuestions.length; i++) {
+            // reassigns correct to the correctAnswer property in myQuestions Array
             correct = myQuestions[i].correctAnswer;
-            userAnswer = $('input[id=radio'+i+']:checked + label').text();
+            // reassigns userAnswer to the checked radio id 
+            userAnswer = $('input[id=radio'+i+']:checked');
 
             if (userAnswer === correct) {
                 numCorrect++;
@@ -128,13 +130,20 @@ var numUnanswered = 0;
             else if ( userAnswer === "") {
                 numUnanswered++;
             }
+
+            scoreScreen(numCorrect, numIncorrect, numUnanswered);
         }
     } 
 
-// ------------------- End Game -------------------
+// ------------------- Display Score -------------------
 
     function scoreScreen() {
-        $("#question-box").empty();
+
+        $("#game-screen").empty();
+        $("#correct").text("Correct Answers: " + numCorrect);
+        $("#incorrect").text("Incorrect Answers: " + numIncorrect);
+        $("#unanswered").text("Unanswered Questions: " + numUnanswered);
+    
     }
 
 
