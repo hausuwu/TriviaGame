@@ -1,5 +1,5 @@
 
-// ------------------- Load Page -------------------
+// ------------------- On Page Load -------------------
 
 $(document).ready(function () {
 
@@ -33,7 +33,7 @@ var myQuestions = [
 // ------------------- Global Variables -------------------
 
 // set game timer clock to 60 seconds
-var timeRemaining = 1000;
+var timeRemaining = 10;
 var correct;
 var userAnswer;
 var numCorrect = 0;
@@ -48,9 +48,9 @@ var numUnanswered = 0;
     function startTimer() {
         $("#timer").text("Time Remaining: " + timeRemaining);
         // count down by 1 second
-        setInterval(countDown, 1000);
+        time = setInterval(countDown, 1000);
         // hides the start button so start can't be pressed again
-        $("#start-screen").hide();
+        $("#start-screen").empty();
         // calls function to display trivia
         displayQuestions();
     }
@@ -62,7 +62,10 @@ var numUnanswered = 0;
         // updates html with the time remaining
         $("#timer").text("Time Remaining: " + timeRemaining);
         // stops and removes the timer at zero 
-        if(timeRemaining === 0){
+        if(timeRemaining < 1){
+            // stop the countdown
+            clearInterval(time);
+            // calls the stop timer function
             stopTimer();
 
         }
@@ -135,11 +138,12 @@ var numUnanswered = 0;
      // stop timer check answers
     function stopTimer() {
 
-        clearInterval();
+        
         // removes the timer from the html
         $("#timer").empty();
         // hides the timer because otherwise negatives are displayed
         $("#timer").hide();
+        // call the check answers function
         checkAnswers();
     }
 
